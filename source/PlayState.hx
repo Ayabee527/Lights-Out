@@ -95,6 +95,12 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
+		if (FlxG.keys.justPressed.SPACE && !player.alive)
+		{
+			player.revive();
+			player.health = player.maxHealth;
+		}
+
 		spawner(0.25);
 
 		for (enemy in enemies)
@@ -104,17 +110,22 @@ class PlayState extends FlxState
 		if (FlxG.overlap(player, lights))
 			player.hurt(-0.05);
 		else if (!FlxG.overlap(player, lights))
-			player.hurt(0.02);
+		{
+			if (!player.dashing)
+				player.hurt(0.02);
+			else
+				player.hurt(0.1);
+		}
 
-		if (FlxG.overlap(player, enemies) && !FlxFlicker.isFlickering(player))
+		if (FlxG.overlap(player, enemies) && !FlxFlicker.isFlickering(player) && !player.dashing)
 		{
 			FlxFlicker.flicker(player, 0.25);
 			FlxG.camera.flash(FlxColor.RED, 0.25);
 			FlxG.camera.shake(0.01, 0.25);
-			if (player.health > player.maxHealth / 5)
+			if (player.health > player.maxHealth / 4)
 				player.hurt(player.health / 2);
 			else
-				player.hurt(player.maxHealth / 5);
+				player.hurt(player.maxHealth / 4);
 		}
 	}
 }

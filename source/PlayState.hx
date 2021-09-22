@@ -111,7 +111,10 @@ class PlayState extends FlxState
 			FlxFlicker.flicker(player, 0.25);
 			FlxG.camera.flash(FlxColor.RED, 0.25);
 			FlxG.camera.shake(0.01, 0.25);
-			player.hurt(player.health / 2);
+			if (player.health > player.maxHealth / 5)
+				player.hurt(player.health / 2);
+			else
+				player.hurt(player.maxHealth / 5);
 		}
 	}
 }

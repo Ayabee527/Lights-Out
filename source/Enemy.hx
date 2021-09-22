@@ -29,7 +29,7 @@ class Enemy extends FlxSprite
 		{
 			case NORMX:
 				skin = FlxColor.RED;
-				size = 12;
+				size = 16;
 			default:
 				skin = FlxColor.GRAY;
 				size = 16;

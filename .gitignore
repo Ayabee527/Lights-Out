@@ -9,11 +9,12 @@
 *.hash
 *.ilk
 *.hxml
-*.hx
 *.lib
 *.exe
 *.xml
 *.ndll
 export/windows/obj/obj/msvc1964-debug-nc/all_objs
 *.ico
-*.json
+export/windows/haxe/ApplicationMain.hx
+export/windows/haxe/ManifestResources.hx
+export/windows/obj/tmp/manifest/default.json

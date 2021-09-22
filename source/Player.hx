@@ -55,6 +55,9 @@ class Player extends FlxSprite
 	{
 		move();
 
+		x = PlayState.clamp(x, 0, FlxG.width);
+		y = PlayState.clamp(y, 0, FlxG.height);
+
 		super.update(elapsed);
 	}
 }

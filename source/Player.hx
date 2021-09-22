@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.math.FlxAngle;
 
 class Player extends FlxSprite
 {
@@ -43,8 +44,8 @@ class Player extends FlxSprite
 
 		if (up || down || left || right)
 		{
-			velocity.x = Math.cos(angle) * 100;
-			velocity.y = Math.sin(angle) * 100;
+			velocity.x = Math.cos(angle * FlxAngle.TO_RAD) * 200;
+			velocity.y = Math.sin(angle * FlxAngle.TO_RAD) * 200;
 		}
 		else
 			velocity.set(0, 0);

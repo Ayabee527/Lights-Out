@@ -6,9 +6,13 @@ import flixel.math.FlxAngle;
 
 class Player extends FlxSprite
 {
+	public var maxHealth = 10;
+
 	override public function new(x:Float = 10, y:Float = 10)
 	{
 		super(x, y);
+
+		health = maxHealth;
 
 		makeGraphic(16, 16);
 	}
@@ -57,6 +61,7 @@ class Player extends FlxSprite
 
 		x = PlayState.clamp(x, 0, FlxG.width);
 		y = PlayState.clamp(y, 0, FlxG.height);
+		health = PlayState.clamp(health, 0, maxHealth);
 
 		super.update(elapsed);
 	}

@@ -5,6 +5,8 @@ import flixel.FlxState;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxRandom;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
@@ -16,6 +18,7 @@ class PlayState extends FlxState
 	var spawned = false;
 	var enemChances = [0.9];
 	var enemies:FlxTypedGroup<Enemy>;
+	var tween:FlxTween;
 
 	override public function create()
 	{
@@ -28,6 +31,7 @@ class PlayState extends FlxState
 
 		player = new Player();
 		add(player);
+		add(player.trail);
 
 		enemies = new FlxTypedGroup<Enemy>();
 		add(enemies);
@@ -54,33 +58,32 @@ class PlayState extends FlxState
 			spawned = true;
 
 			var enemSpawn = new FlxRandom().weightedPick(enemChances);
+			var enem:Enemy;
 			switch (enemSpawn)
 			{
 				case 0:
 					var leftOrRight:Bool = new FlxRandom().bool();
 					if (leftOrRight)
 					{
-						var enem = new Enemy(-12, new FlxRandom().float(0, FlxG.height - 12), NORMX);
-						enemies.add(enem);
+						enem = new Enemy(-12, new FlxRandom().float(0, FlxG.height - 12), NORMX);
 					}
 					else
 					{
-						var enem = new Enemy(FlxG.width, new FlxRandom().float(0, FlxG.height - 12), NORMX);
-						enemies.add(enem);
+						enem = new Enemy(FlxG.width, new FlxRandom().float(0, FlxG.height - 12), NORMX);
 					}
 				default:
 					var leftOrRight:Bool = new FlxRandom().bool();
 					if (leftOrRight)
 					{
-						var enem = new Enemy(-12, new FlxRandom().float(0, FlxG.height - 12), NORMX);
-						enemies.add(enem);
+						enem = new Enemy(-12, new FlxRandom().float(0, FlxG.height - 12), NORMX);
 					}
 					else
 					{
-						var enem = new Enemy(FlxG.width, new FlxRandom().float(0, FlxG.height - 12), NORMX);
-						enemies.add(enem);
+						enem = new Enemy(FlxG.width, new FlxRandom().float(0, FlxG.height - 12), NORMX);
 					}
 			}
+			enemies.add(enem);
+			add(enem.trail);
 
 			new FlxTimer().start(delay, resetSpawn);
 		}
@@ -95,17 +98,29 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
+		FlxG.camera.alpha = (player.health / 10) + 0.15;
+
 		if (FlxG.keys.justPressed.SPACE && !player.alive)
 		{
 			player.revive();
 			player.health = player.maxHealth;
+			FlxG.camera.flash(new FlxRandom().color(), 0.75);
+			FlxFlicker.flicker(player);
 		}
+
+		if (!player.alive)
+			player.trail.visible = false;
+		else
+			player.trail.visible = true;
 
 		spawner(0.25);
 
 		for (enemy in enemies)
 			if (!enemy.alive)
+			{
 				enemies.remove(enemy);
+				remove(enemy.trail);
+			}
 
 		if (FlxG.overlap(player, lights))
 			player.hurt(-0.05);

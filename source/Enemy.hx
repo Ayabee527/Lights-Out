@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
 
 enum EnemyType
@@ -12,10 +13,10 @@ enum EnemyType
 class Enemy extends FlxSprite
 {
 	public var type:EnemyType;
+	public var trail:FlxTrail;
 
 	var skin:FlxColor;
 	var size:Int;
-
 	var startX:Float;
 
 	override public function new(x:Float, y:Float, type:EnemyType)
@@ -36,6 +37,7 @@ class Enemy extends FlxSprite
 		}
 
 		makeGraphic(size, size, skin);
+		trail = new FlxTrail(this, null, 6, 0, 0.6, 0.1);
 	}
 
 	function normXAI()

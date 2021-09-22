@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxTrail;
 import flixel.math.FlxAngle;
 import flixel.util.FlxTimer;
 
@@ -9,6 +10,7 @@ class Player extends FlxSprite
 {
 	public var maxHealth = 10;
 	public var dashing:Bool = false;
+	public var trail:FlxTrail;
 
 	var vel:Float = 200;
 
@@ -19,6 +21,7 @@ class Player extends FlxSprite
 		health = maxHealth;
 
 		makeGraphic(16, 16);
+		trail = new FlxTrail(this, null, 6, 0, 0.6, 0.1);
 	}
 
 	function move()

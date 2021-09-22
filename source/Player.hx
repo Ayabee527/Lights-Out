@@ -87,8 +87,8 @@ class Player extends FlxSprite
 		move();
 		dash();
 
-		x = PlayState.clamp(x, 0, FlxG.width);
-		y = PlayState.clamp(y, 0, FlxG.height);
+		x = PlayState.clamp(x, 0, FlxG.width - width);
+		y = PlayState.clamp(y, 0, FlxG.height - height);
 		health = PlayState.clamp(health, 0, maxHealth);
 
 		super.update(elapsed);

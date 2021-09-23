@@ -1,24 +1,32 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
 import flixel.math.FlxRandom;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
-	var player:Player;
+	public static var player:Player;
+
 	var lights:FlxTypedGroup<LightBeam>;
 	var hud:HUD;
 	var spawned = false;
 	var enemChances = [0.9];
 	var enemies:FlxTypedGroup<Enemy>;
 	var tween:FlxTween;
+	var pauseButt:FlxButton;
+
+	public static var black:FlxSprite;
+	public static var score:Float = 0;
 
 	override public function create()
 	{
@@ -29,12 +37,21 @@ class PlayState extends FlxState
 
 		add(lights);
 
+		enemies = new FlxTypedGroup<Enemy>();
+		add(enemies);
+
+		pauseButt = new FlxButton(0, 5, "Pause!", () -> openSubState(new Pause()));
+		pauseButt.x = FlxG.width - pauseButt.width - 5;
+		add(pauseButt);
+
+		black = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		black.setPosition(0, 0);
+		black.alpha = 0;
+		add(black);
+
 		player = new Player();
 		add(player);
 		add(player.trail);
-
-		enemies = new FlxTypedGroup<Enemy>();
-		add(enemies);
 
 		hud = new HUD(player);
 		add(hud);
@@ -98,15 +115,18 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		FlxG.camera.alpha = (player.health / 10) + 0.15;
+		hud.updateHUD(score);
 
-		if (FlxG.keys.justPressed.SPACE && !player.alive)
-		{
-			player.revive();
-			player.health = player.maxHealth;
-			FlxG.camera.flash(new FlxRandom().color(), 0.75);
-			FlxFlicker.flicker(player);
-		}
+		if (score <= 1)
+			score = 1;
+
+		if (FlxG.keys.justPressed.ESCAPE)
+			openSubState(new Pause());
+
+		black.alpha = (player.health / 10) + 0.1;
+
+		if (!player.alive)
+			openSubState(new GameOver());
 
 		if (!player.alive)
 			player.trail.visible = false;
@@ -123,9 +143,13 @@ class PlayState extends FlxState
 			}
 
 		if (FlxG.overlap(player, lights))
+		{
 			player.hurt(-0.05);
+			score += 1;
+		}
 		else if (!FlxG.overlap(player, lights))
 		{
+			score -= 1;
 			if (!player.dashing)
 				player.hurt(0.02);
 			else
@@ -134,6 +158,7 @@ class PlayState extends FlxState
 
 		if (FlxG.overlap(player, enemies) && !FlxFlicker.isFlickering(player) && !player.dashing)
 		{
+			score -= 100;
 			FlxFlicker.flicker(player, 0.25);
 			FlxG.camera.flash(FlxColor.RED, 0.25);
 			FlxG.camera.shake(0.01, 0.25);

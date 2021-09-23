@@ -38,6 +38,9 @@ class GameOver extends FlxSubState
 
 		var instr = MainMenuState.createText(FlxG.height / 2, ['Press [SPACE]', 'to retry!'], 24, FlxColor.ORANGE, FlxColor.RED);
 		add(instr);
+
+		var highScore = MainMenuState.createText(2 * FlxG.height / 3, ['Highscore: ' + PlayState.highScore], 16, FlxColor.ORANGE, FlxColor.RED);
+		add(highScore);
 	}
 
 	override function update(elapsed:Float)

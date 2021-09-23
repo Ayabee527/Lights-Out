@@ -26,6 +26,7 @@ class PlayState extends FlxState
 	var pauseButt:FlxButton;
 
 	public static var score:Float = 0;
+	public static var highScore:Float = 0;
 
 	override public function create()
 	{
@@ -120,7 +121,11 @@ class PlayState extends FlxState
 		FlxG.camera.alpha = (player.health / 10) + 0.15;
 
 		if (!player.alive)
+		{
+			if (score > highScore)
+				highScore = score;
 			openSubState(new GameOver());
+		}
 
 		if (!player.alive)
 			player.trail.visible = false;

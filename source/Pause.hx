@@ -19,7 +19,7 @@ class Pause extends FlxSubState
 		var instr = MainMenuState.createText(FlxG.height / 3 - 24, [' ', ' ', ' ', ' ', 'Press [ESC]', 'to unpause'], 24, FlxColor.CYAN, FlxColor.BLUE);
 		add(instr);
 
-		var pauseButt = new FlxButton(0, 0, "Unpause!", () -> close());
+		var pauseButt = new FlxButton(0, 0, "[M]enu!", () -> FlxG.switchState(new MainMenuState()));
 		pauseButt.x = FlxG.width / 2 - pauseButt.width / 2;
 		pauseButt.y = 4 * FlxG.height / 5 - pauseButt.height / 2;
 		add(pauseButt);
@@ -29,6 +29,8 @@ class Pause extends FlxSubState
 	{
 		if (FlxG.keys.justPressed.ESCAPE)
 			close();
+		if (FlxG.keys.justPressed.M)
+			FlxG.switchState(new MainMenuState());
 
 		super.update(elapsed);
 	}

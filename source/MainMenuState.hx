@@ -35,10 +35,15 @@ class MainMenuState extends FlxState
 		title = createText(FlxG.height / 3, ["Lights", "Out"], 48, FlxColor.CYAN, FlxColor.BLUE);
 		add(title);
 
-		playButt = new FlxButton(0, 0, "Play!", () -> FlxG.switchState(new PlayState()));
-		playButt.x = FlxG.width / 2 - playButt.width / 2;
+		playButt = new FlxButton(0, 0, "[P]lay!", () -> FlxG.switchState(new PlayState()));
+		playButt.x = FlxG.width / 3 - playButt.width / 2;
 		playButt.y = 3 * FlxG.height / 4 - playButt.height / 2;
 		add(playButt);
+
+		var infoButt = new FlxButton(0, 0, "[I]nfo!", () -> openSubState(new Info()));
+		infoButt.x = 2 * FlxG.width / 3 - infoButt.width / 2;
+		infoButt.y = 3 * FlxG.height / 4 - infoButt.height / 2;
+		add(infoButt);
 
 		enemies = new FlxTypedGroup<Enemy>();
 		add(enemies);
@@ -112,6 +117,11 @@ class MainMenuState extends FlxState
 	override function update(elapsed:Float)
 	{
 		spawner(0.25);
+
+		if (FlxG.keys.justPressed.I)
+			openSubState(new Info());
+		if (FlxG.keys.justPressed.P)
+			FlxG.switchState(new PlayState());
 
 		super.update(elapsed);
 	}

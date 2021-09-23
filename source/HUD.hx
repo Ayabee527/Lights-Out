@@ -9,7 +9,8 @@ import flixel.util.FlxColor;
 
 class HUD extends FlxGroup
 {
-	var healthBar:FlxBar;
+	public var healthBar:FlxBar;
+
 	var healthText:FlxText;
 	var scoreText:FlxText;
 

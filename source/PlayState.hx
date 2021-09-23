@@ -25,7 +25,6 @@ class PlayState extends FlxState
 	var tween:FlxTween;
 	var pauseButt:FlxButton;
 
-	public static var black:FlxSprite;
 	public static var score:Float = 0;
 
 	override public function create()
@@ -40,21 +39,16 @@ class PlayState extends FlxState
 		enemies = new FlxTypedGroup<Enemy>();
 		add(enemies);
 
-		pauseButt = new FlxButton(0, 5, "Pause!", () -> openSubState(new Pause()));
-		pauseButt.x = FlxG.width - pauseButt.width - 5;
-		add(pauseButt);
-
-		black = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		black.setPosition(0, 0);
-		black.alpha = 0;
-		add(black);
-
 		player = new Player();
 		add(player);
 		add(player.trail);
 
 		hud = new HUD(player);
 		add(hud);
+
+		pauseButt = new FlxButton(0, 5, "Pause!", () -> openSubState(new Pause()));
+		pauseButt.x = FlxG.width - pauseButt.width - 5;
+		add(pauseButt);
 
 		super.create();
 	}
@@ -123,7 +117,7 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.ESCAPE)
 			openSubState(new Pause());
 
-		black.alpha = (player.health / 10) + 0.1;
+		FlxG.camera.alpha = (player.health / 10) + 0.15;
 
 		if (!player.alive)
 			openSubState(new GameOver());

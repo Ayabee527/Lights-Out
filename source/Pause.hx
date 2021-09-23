@@ -11,6 +11,8 @@ class Pause extends FlxSubState
 	{
 		super.create();
 
+		FlxG.camera.alpha = 1;
+
 		var paused = MainMenuState.createText(FlxG.height / 3 - 24, ['PAUSED'], 48, FlxColor.CYAN, FlxColor.BLUE);
 		add(paused);
 

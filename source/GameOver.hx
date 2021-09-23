@@ -50,13 +50,17 @@ class GameOver extends FlxSubState
 		if (FlxG.keys.justPressed.SPACE)
 		{
 			close();
-			PlayState.black.alpha = 0;
 			PlayState.player.revive();
 			PlayState.player.health = PlayState.player.maxHealth;
 			FlxG.camera.flash(new FlxRandom().color(), 0.75);
 			FlxFlicker.flicker(PlayState.player);
 			PlayState.score = 0;
 		}
+
+		if (FlxG.camera.alpha < 1)
+			FlxG.camera.alpha += 0.01;
+		else
+			FlxG.camera.alpha = 1;
 
 		super.update(elapsed);
 	}

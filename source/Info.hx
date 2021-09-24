@@ -10,6 +10,8 @@ class Info extends FlxSubState
 	{
 		super.create();
 
+		bgColor = 0xAA000000;
+
 		var group = MainMenuState.createText(20, [
 			'Stay in the light(light gray rectangle)',
 			'to survive and increase your score!',
